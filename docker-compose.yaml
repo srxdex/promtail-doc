@@ -8,6 +8,7 @@ services:
     image: grafana/promtail:2.9.0
     volumes:
       - /home/pi/prod/logs:/var/log
+      - /var/log/mosquitto/:/var/log/mosquitto
       - ./promtail/config.yaml:/etc/promtail/config.yml
 
     command: -config.file=/etc/promtail/config.yml

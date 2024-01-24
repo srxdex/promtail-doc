@@ -9,18 +9,17 @@ client:
   url: https://354058:glc_eyJvIjoiNzY4NDE4IiwibiI6InN0YWNrLTUwNDY5Ni1pbnRlZ3JhdGlvbi1hcnR1cml0byIsImsiOiIzY2ZNWjVoOHY0MjF2M3NaNTZxbjZQdWwiLCJtIjp7InIiOiJ1cyJ9fQ==@logs-prod-017.grafana.net/api/prom/push
         
 scrape_configs:
-- job_name: system
+- job_name: ar-locker
   static_configs:
   - targets:
       - localhost
     labels:
-      job: varlogs
+      job: ar-locker
       __path__: /var/log/*.log
-- job_name: nginx
-  entry_parser: raw
+- job_name: ar-mosquito
   static_configs:
   - targets:
       - localhost
     labels:
-      job: nginx
-      __path__: /var/log/nginx
+      job: ar-mosquito
+      __path__: /var/log/mosquito 

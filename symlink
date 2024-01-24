@@ -1,1 +1,0 @@
-ln  /var/log/mosquitto/mosquitto.log /home/pi/prod/logs

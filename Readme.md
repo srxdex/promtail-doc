@@ -1,10 +1,10 @@
 
 # Table of Contents
 
-1.  [hosted logs](#org1ba29e0)
+1.  [hosted logs](#org66f9dd3)
 
 
-<a id="org1ba29e0"></a>
+<a id="org66f9dd3"></a>
 
 # hosted logs
 
@@ -74,7 +74,11 @@ siendo dir el directorio donde ejecutaremos el compose o comando de docker
 ejemplo de comando docker para ejecutar promtail con esta configuracion
 
     
-    docker run --name promtail --volume "$PWD/promtail:/etc/promtail" --volume "/var/log:/var/log" grafana/promtail:main -config.file=/etc/promtail/config.yaml
+    docker run --name promtail \
+    --volume "$PWD/promtail:/etc/promtail" \
+    --volume "/var/log:/var/log" \
+    grafana/promtail:main \
+    -config.file=/etc/promtail/config.yaml
 
 donde  &#x2013;volume "/var/log:/var/log"   el primer var log es la ruta desde dondo provienen nuestros logs
 

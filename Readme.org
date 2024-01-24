@@ -79,7 +79,11 @@ ejemplo de comando docker para ejecutar promtail con esta configuracion
 
 #+begin_src bash
 
-docker run --name promtail --volume "$PWD/promtail:/etc/promtail" --volume "/var/log:/var/log" grafana/promtail:main -config.file=/etc/promtail/config.yaml
+	docker run --name promtail \
+	--volume "$PWD/promtail:/etc/promtail" \
+	--volume "/var/log:/var/log" \
+	grafana/promtail:main \
+	-config.file=/etc/promtail/config.yaml
 
 #+end_src
 

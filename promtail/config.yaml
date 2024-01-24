@@ -16,10 +16,10 @@ scrape_configs:
     labels:
       job: ar-locker
       __path__: /var/log/*.log
-- job_name: ar-mosquito
+- job_name: ar-mosquitto
   static_configs:
   - targets:
       - localhost
     labels:
-      job: ar-mosquito
-      __path__: /var/log/mosquito 
+      job: ar-mosquitto
+      __path__: /var/log/mosquitto 

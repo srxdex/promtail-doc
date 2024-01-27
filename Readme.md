@@ -1,10 +1,11 @@
 
 # Table of Contents
 
-1.  [hosted logs](#org66f9dd3)
+1.  [hosted logs](#org75817ae)
+2.  [crear dashboard](#org360cb9d)
 
 
-<a id="org66f9dd3"></a>
+<a id="org75817ae"></a>
 
 # hosted logs
 
@@ -101,4 +102,37 @@ seria as:
         command: -config.file=/etc/promtail/config.yml
         networks:
           - loki
+
+
+<a id="org360cb9d"></a>
+
+# crear dashboard
+
+para crear un nuevo dasboard nos dirigimos a
+
+[new dashboard](https://innovacion1.grafana.net/dashboard/new)
+
+veremos esto
+
+![img](asset/2.png)
+
+presionamos en add visualization y aparecera los siguiente
+
+![img](asset/3.png)
+
+seleccionam el recolector de logs por defecto en este caso grafanacloud-innovacion1-logs y seleccionamos
+dashboard, deberiamos ver algo asi:
+
+![img](asset/4.png)
+
+donde dice time series seleccionamos que tipo de filtro requerimos en este caso
+logs
+
+![img](asset/5.png)
+
+una vez seleccionamoy ya tenemos seleccionado la fuente de logs
+podemos seleccionar una query desde un archivo como el este ejemplo
+que apunta al log de mosquitto
+
+![img](asset/6.png)
 

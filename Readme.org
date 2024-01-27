@@ -1,3 +1,4 @@
+
 * hosted logs
 
   nos dirigimos a Home -> Connections -> Add new connection -> Hosted logs
@@ -111,3 +112,36 @@ services:
     networks:
       - loki
 #+end_src
+
+
+* crear dashboard
+
+para crear un nuevo dasboard nos dirigimos a
+
+[[https://innovacion1.grafana.net/dashboard/new][new dashboard]]
+
+veremos esto
+
+[[file:asset/2.png]]
+
+presionamos en add visualization y aparecera los siguiente
+
+[[file:asset/3.png]]
+
+seleccionam el recolector de logs por defecto en este caso grafanacloud-innovacion1-logs y seleccionamos
+dashboard, deberiamos ver algo asi:
+
+
+[[file:asset/4.png]]
+
+donde dice time series seleccionamos que tipo de filtro requerimos en este caso
+logs
+
+[[file:asset/5.png]]
+
+una vez seleccionamoy ya tenemos seleccionado la fuente de logs
+podemos seleccionar una query desde un archivo como el este ejemplo
+que apunta al log de mosquitto
+
+[[file:asset/6.png]]
+

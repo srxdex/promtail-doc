@@ -6,6 +6,7 @@ networks:
 services:
   promtail:
     image: grafana/promtail:2.9.0
+    restart: always
     volumes:
       - /home/pi/prod/logs:/var/log
       - /var/log/mosquitto/:/var/log/mosquitto

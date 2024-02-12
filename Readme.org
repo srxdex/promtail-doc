@@ -12,6 +12,10 @@
 
 ** config.yaml
 
+> [!WARNING]  
+> Cada [dispositivo] tiene su propio token es recomendable sobreescribir la config de este repo
+> usar esta config solo como base 
+
  #+begin_src yaml
 
 server:

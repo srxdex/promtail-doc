@@ -1,15 +1,15 @@
 
 # Table of Contents
 
-1.  [hosted logs](#org1524154)
-    1.  [config.yaml](#orgd2e0010)
-    2.  [arbol de directorio](#org6640a11)
-    3.  [docker run](#orge77e387)
-    4.  [Docker compose](#org2932661)
-2.  [crear dashboard](#org9e716bc)
+1.  [hosted logs](#org57975c8)
+    1.  [config.yaml](#orgef17b23)
+    2.  [arbol de directorio](#orgae22555)
+    3.  [docker run](#org99e4573)
+    4.  [Docker compose](#org5151cf2)
+2.  [crear dashboard](#orgcc88694)
 
 
-<a id="org1524154"></a>
+<a id="org57975c8"></a>
 
 # hosted logs
 
@@ -21,9 +21,13 @@ y creamos un token para el nuevos dispositivo nos dara una
 configuracion agregando el token recien creado ejemplo:
 
 
-<a id="orgd2e0010"></a>
+<a id="orgef17b23"></a>
 
 ## config.yaml
+
+> [!WARNING]  
+> Cada [dispositivo] tiene su propio token es recomendable sobreescribir la config de este repo
+> usar esta config solo como base 
 
     
     server:
@@ -75,7 +79,7 @@ para agregar una nueva fuente de logs debe quedar asi
     	__path__: /var/log/mosquitto 
 
 
-<a id="org6640a11"></a>
+<a id="orgae22555"></a>
 
 ## arbol de directorio
 
@@ -94,7 +98,7 @@ debe quedar algo asi:
 siendo dir el directorio donde ejecutaremos el compose o comando de docker
 
 
-<a id="orge77e387"></a>
+<a id="org99e4573"></a>
 
 ## docker run
 
@@ -120,7 +124,7 @@ cuidado con hacer esto
 esto no funciona y nos dara error ya qeu estamos tratando de montar un archivo en un direcctorio
 
 
-<a id="org2932661"></a>
+<a id="org5151cf2"></a>
 
 ## Docker compose
 
@@ -146,7 +150,7 @@ en este caso seria asi:
           - loki
 
 
-<a id="org9e716bc"></a>
+<a id="orgcc88694"></a>
 
 # crear dashboard
 

@@ -10,6 +10,7 @@
  y creamos un token para el nuevos dispositivo nos dara una
  configuracion agregando el token recien creado ejemplo:
 
+** config.yaml
 
  #+begin_src yaml
 
@@ -24,12 +25,12 @@ client:
   url: https://354058:glc_eyJvIjoiNzY4NDE4IiwibiI6InN0YWNrLTUwNDY5Ni1pbnRlZ3JhdGlvbi1hcnR1cml0byIsImsiOiIzY2ZNWjVoOHY0MjF2M3NaNTZxbjZQdWwiLCJtIjp7InIiOiJ1cyJ9fQ==@logs-prod-017.grafana.net/api/prom/push
         
 scrape_configs:
-- job_name: system
+- job_name: system   #es recomendable poner nombre asociado al dispositivo
   static_configs:
   - targets:
       - localhost
     labels:
-      job: varlogs
+      job: varlogs   #poner mismo nombre que job_name para reconocer en graphana
       __path__: /var/log/*.log
 
  #+end_src
@@ -37,37 +38,47 @@ scrape_configs:
 para agregar una nueva fuente de logs debe quedar asi
 
 #+begin_src yaml
-server:
-  http_listen_port: 0
-  grpc_listen_port: 0
-        
-positions:
-  filename: /tmp/positions.yaml
-        
-client:
-  url: https://354058:glc_eyJvIjoiNzY4NDE4IiwibiI6InN0YWNrLTUwNDY5Ni1pbnRlZ3JhdGlvbi1hcnR1cml0byIsImsiOiIzY2ZNWjVoOHY0MjF2M3NaNTZxbjZQdWwiLCJtIjp7InIiOiJ1cyJ9fQ==@logs-prod-017.grafana.net/api/prom/push
-        
-scrape_configs:
-- job_name: ar-locker
-  static_configs:
-  - targets:
-      - localhost
-    labels:
-      job: ar-locker
-      __path__: /var/log/*.log
-- job_name: ar-mosquitto
-  static_configs:
-  - targets:
-      - localhost
-    labels:
-      job: ar-mosquitto
-      __path__: /var/log/mosquitto 
+  server:
+    http_listen_port: 0
+    grpc_listen_port: 0
+
+  positions:
+    filename: /tmp/positions.yaml
+
+  client:
+    url: https://354058:glc_eyJvIjoiNzY4NDE4IiwibiI6InN0YWNrLTUwNDY5Ni1pbnRlZ3JhdGlvbi1hcnR1cml0byIsImsiOiIzY2ZNWjVoOHY0MjF2M3NaNTZxbjZQdWwiLCJtIjp7InIiOiJ1cyJ9fQ==@logs-prod-017.grafana.net/api/prom/push
+
+  scrape_configs:
+  - job_name: ar-locker #nombre de job (identificador en graphana)
+    static_configs:
+    - targets:
+	- localhost
+      labels:
+	job: ar-locker
+	__path__: /var/log/*.log
+#comienzo de nueva fuente de logs
+  - job_name: ar-mosquitto
+    static_configs:
+    - targets:
+	- localhost
+      labels:
+	job: ar-mosquitto
+	__path__: /var/log/mosquitto 
 #+end_src
 
+** arbol de directorio
 
 esta configuracion debe ir dentro de un directorio llamado promtail
+es recomendable copiar desde la pagina de graphana ya que asi se copia el token del dispositivo
+junto con los otros datos para recibir los logs en graphana
 
 debe quedar algo asi:
+
+#+begin_example
+├── docker-compose.yaml
+├── promtail
+│       └── config.yaml
+#+end_example
 
 #+begin_src bash
 /dir/promtail/config.yaml
@@ -76,23 +87,42 @@ debe quedar algo asi:
 
 siendo dir el directorio donde ejecutaremos el compose o comando de docker
 
+** docker run
+
 ejemplo de comando docker para ejecutar promtail con esta configuracion
 
 #+begin_src bash
 
 	docker run --name promtail \
-	--volume "$PWD/promtail:/etc/promtail" \
-	--volume "/var/log:/var/log" \
+	--volume "$PWD/promtail:/etc/promtail" \ 
+	--volume "/var/log:/var/log" \  #var antes de  { : } es la ruta desde donde tomaremos los logs
 	grafana/promtail:main \
 	-config.file=/etc/promtail/config.yaml
 
 #+end_src
 
 
-donde  --volume "/var/log:/var/log"   el primer var log es la ruta desde dondo provienen nuestros logs
+donde  --volume "/var/log:/var/log"   el primer var log es la ruta donde provienen nuestros logs
 
-tambien es posible ejecutarlo desde docker compose en este caso
-seria as:
+ruta-local-logs:/var/log
+
+#+begin_example
+/home/dex/prod/logs:/var/logs  
+#+end_example
+
+cuidado con hacer esto
+
+#+begin_example
+/home/user/prod/logs/error.log:/var/log
+#+end_example
+esto no funciona y nos dara error ya qeu estamos tratando de montar un archivo en un direcctorio
+
+** Docker compose
+
+
+tambien es posible ejecutarlo desde docker compose que es la opcion mas recomendable
+y reproducible (recordar que la config cambia token y hay qeu reemplazar por dispositivo)
+en este caso seria asi:
 
 #+begin_src yaml
 version: "3"
@@ -112,7 +142,6 @@ services:
     networks:
       - loki
 #+end_src
-
 
 * crear dashboard
 
@@ -145,3 +174,7 @@ que apunta al log de mosquitto
 
 [[file:asset/6.png]]
 
+para buscar los logs de un dispositivo los seleccionaremos por job
+
+
+[[file:asset/7.png]]

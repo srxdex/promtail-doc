@@ -1,11 +1,15 @@
 
 # Table of Contents
 
-1.  [hosted logs](#org75817ae)
-2.  [crear dashboard](#org360cb9d)
+1.  [hosted logs](#org1524154)
+    1.  [config.yaml](#orgd2e0010)
+    2.  [arbol de directorio](#org6640a11)
+    3.  [docker run](#orge77e387)
+    4.  [Docker compose](#org2932661)
+2.  [crear dashboard](#org9e716bc)
 
 
-<a id="org75817ae"></a>
+<a id="org1524154"></a>
 
 # hosted logs
 
@@ -16,6 +20,11 @@ nos dirigimos a Home -> Connections -> Add new connection -> Hosted logs
 y creamos un token para el nuevos dispositivo nos dara una
 configuracion agregando el token recien creado ejemplo:
 
+
+<a id="orgd2e0010"></a>
+
+## config.yaml
+
     
     server:
       http_listen_port: 0
@@ -28,63 +37,96 @@ configuracion agregando el token recien creado ejemplo:
       url: https://354058:glc_eyJvIjoiNzY4NDE4IiwibiI6InN0YWNrLTUwNDY5Ni1pbnRlZ3JhdGlvbi1hcnR1cml0byIsImsiOiIzY2ZNWjVoOHY0MjF2M3NaNTZxbjZQdWwiLCJtIjp7InIiOiJ1cyJ9fQ==@logs-prod-017.grafana.net/api/prom/push
     
     scrape_configs:
-    - job_name: system
+    - job_name: system   #es recomendable poner nombre asociado al dispositivo
       static_configs:
       - targets:
           - localhost
         labels:
-          job: varlogs
+          job: varlogs   #poner mismo nombre que job_name para reconocer en graphana
           __path__: /var/log/*.log
 
 para agregar una nueva fuente de logs debe quedar asi
 
-    server:
-      http_listen_port: 0
-      grpc_listen_port: 0
+      server:
+        http_listen_port: 0
+        grpc_listen_port: 0
     
-    positions:
-      filename: /tmp/positions.yaml
+      positions:
+        filename: /tmp/positions.yaml
     
-    client:
-      url: https://354058:glc_eyJvIjoiNzY4NDE4IiwibiI6InN0YWNrLTUwNDY5Ni1pbnRlZ3JhdGlvbi1hcnR1cml0byIsImsiOiIzY2ZNWjVoOHY0MjF2M3NaNTZxbjZQdWwiLCJtIjp7InIiOiJ1cyJ9fQ==@logs-prod-017.grafana.net/api/prom/push
+      client:
+        url: https://354058:glc_eyJvIjoiNzY4NDE4IiwibiI6InN0YWNrLTUwNDY5Ni1pbnRlZ3JhdGlvbi1hcnR1cml0byIsImsiOiIzY2ZNWjVoOHY0MjF2M3NaNTZxbjZQdWwiLCJtIjp7InIiOiJ1cyJ9fQ==@logs-prod-017.grafana.net/api/prom/push
     
-    scrape_configs:
-    - job_name: ar-locker
-      static_configs:
-      - targets:
-          - localhost
-        labels:
-          job: ar-locker
-          __path__: /var/log/*.log
-    - job_name: ar-mosquitto
-      static_configs:
-      - targets:
-          - localhost
-        labels:
-          job: ar-mosquitto
-          __path__: /var/log/mosquitto 
+      scrape_configs:
+      - job_name: ar-locker #nombre de job (identificador en graphana)
+        static_configs:
+        - targets:
+    	- localhost
+          labels:
+    	job: ar-locker
+    	__path__: /var/log/*.log
+    #comienzo de nueva fuente de logs
+      - job_name: ar-mosquitto
+        static_configs:
+        - targets:
+    	- localhost
+          labels:
+    	job: ar-mosquitto
+    	__path__: /var/log/mosquitto 
+
+
+<a id="org6640a11"></a>
+
+## arbol de directorio
 
 esta configuracion debe ir dentro de un directorio llamado promtail
+es recomendable copiar desde la pagina de graphana ya que asi se copia el token del dispositivo
+junto con los otros datos para recibir los logs en graphana
 
 debe quedar algo asi:
+
+    ├── docker-compose.yaml
+    ├── promtail
+    │       └── config.yaml
 
     /dir/promtail/config.yaml
 
 siendo dir el directorio donde ejecutaremos el compose o comando de docker
 
+
+<a id="orge77e387"></a>
+
+## docker run
+
 ejemplo de comando docker para ejecutar promtail con esta configuracion
 
     
     docker run --name promtail \
-    --volume "$PWD/promtail:/etc/promtail" \
-    --volume "/var/log:/var/log" \
+    --volume "$PWD/promtail:/etc/promtail" \ 
+    --volume "/var/log:/var/log" \  #var antes de  { : } es la ruta desde donde tomaremos los logs
     grafana/promtail:main \
     -config.file=/etc/promtail/config.yaml
 
-donde  &#x2013;volume "/var/log:/var/log"   el primer var log es la ruta desde dondo provienen nuestros logs
+donde  &#x2013;volume "/var/log:/var/log"   el primer var log es la ruta donde provienen nuestros logs
 
-tambien es posible ejecutarlo desde docker compose en este caso
-seria as:
+ruta-local-logs:/var/log
+
+    /home/dex/prod/logs:/var/logs  
+
+cuidado con hacer esto
+
+    /home/user/prod/logs/error.log:/var/log
+
+esto no funciona y nos dara error ya qeu estamos tratando de montar un archivo en un direcctorio
+
+
+<a id="org2932661"></a>
+
+## Docker compose
+
+tambien es posible ejecutarlo desde docker compose que es la opcion mas recomendable
+y reproducible (recordar que la config cambia token y hay qeu reemplazar por dispositivo)
+en este caso seria asi:
 
     version: "3"
     
@@ -104,7 +146,7 @@ seria as:
           - loki
 
 
-<a id="org360cb9d"></a>
+<a id="org9e716bc"></a>
 
 # crear dashboard
 
@@ -135,4 +177,8 @@ podemos seleccionar una query desde un archivo como el este ejemplo
 que apunta al log de mosquitto
 
 ![img](asset/6.png)
+
+para buscar los logs de un dispositivo los seleccionaremos por job
+
+![img](asset/7.png)
 

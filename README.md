@@ -25,6 +25,7 @@ Dar un nombre y crear el token para el nuevo dispositivo, esto genera una config
 > Es recomendable copiar desde la página de graphana ya que asi se copia el token del dispositivo junto a los demás datos
 > usar esta config solo como base.
 
+```
     server:
       http_listen_port: 0
       grpc_listen_port: 0
@@ -43,35 +44,40 @@ Dar un nombre y crear el token para el nuevo dispositivo, esto genera una config
         labels:
           job: varlogs   #poner mismo nombre que job_name para reconocer en graphana
           __path__: /var/log/*.log
+```
 
 Agregando una nueva fuente de logs:
 
-      server:
-        http_listen_port: 0
-        grpc_listen_port: 0
+```
+    server:
+      http_listen_port: 0
+      grpc_listen_port: 0
 
-      positions:
-        filename: /tmp/positions.yaml
+    positions:
+      filename: /tmp/positions.yaml
 
-      client:
-        url: https://354058:<TOKEN>@logs-prod-017.grafana.net/api/prom/push
+    client:
+      url: https://354058:<TOKEN>@logs-prod-017.grafana.net/api/prom/push
 
-      scrape_configs:
-      - job_name: demo-123-elocker #nombre de job (identificador en graphana)
-        static_configs:
-        - targets:
-    	- localhost
-          labels:
-    	job: demo-123-elocker
-    	__path__: /var/log/*.log
-    # Nueva fuente de logs:
-      - job_name: demo-123-mosquitto
-        static_configs:
-        - targets:
-    	- localhost
-          labels:
-    	job: demo-123-mosquitto
-    	__path__: /var/log/mosquitto
+    scrape_configs:
+    - job_name: demo-123-elocker #nombre de job (identificador en graphana)
+      static_configs:
+      - targets:
+    	  - localhost
+      labels:
+    	  job: demo-123-elocker
+    	  __path__: /var/log/*.log
+    
+    #Nueva fuente de logs:
+    - job_name: demo-123-mosquitto
+      static_configs:
+      - targets:
+    	  - localhost
+    labels:
+      job: demo-123-mosquitto
+      __path__: /var/log/mosquitto/*.log
+```
+
 
 <a id="orgae22555"></a>
 

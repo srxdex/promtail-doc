@@ -22,4 +22,4 @@ scrape_configs:
       - localhost
     labels:
       job: <staging|demo|master>-<id elocker>-mosquitto
-      __path__: /var/log/mosquitto *.log
+      __path__: /var/log/mosquitto/*.log

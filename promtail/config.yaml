@@ -9,17 +9,17 @@ client:
   url: https://354058:<token>@logs-prod-017.grafana.net/api/prom/push
         
 scrape_configs:
-- job_name: <enviroment-idlocker>
+- job_name: <staging|demo|master>-<id elocker>-elocker
   static_configs:
   - targets:
       - localhost
     labels:
-      job: <enviroment-idlocker>
+      job: <staging|demo|master>-<id elocker>-elocker
       __path__: /var/log/*.log
-- job_name: ar-mosquitto
+- job_name: <staging|demo|master>-<id elocker>-mosquitto
   static_configs:
   - targets:
       - localhost
     labels:
-      job: ar-mosquitto
+      job: <staging|demo|master>-<id elocker>-mosquitto
       __path__: /var/log/mosquitto *.log

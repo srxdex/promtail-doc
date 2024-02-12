@@ -6,15 +6,15 @@ positions:
   filename: /tmp/positions.yaml
         
 client:
-  url: https://354058:glc_eyJvIjoiNzY4NDE4IiwibiI6InN0YWNrLTUwNDY5Ni1pbnRlZ3JhdGlvbi1hcnR1cml0byIsImsiOiIzY2ZNWjVoOHY0MjF2M3NaNTZxbjZQdWwiLCJtIjp7InIiOiJ1cyJ9fQ==@logs-prod-017.grafana.net/api/prom/push
+  url: https://354058:<token>@logs-prod-017.grafana.net/api/prom/push
         
 scrape_configs:
-- job_name: ar-locker
+- job_name: <enviroment-idlocker>
   static_configs:
   - targets:
       - localhost
     labels:
-      job: ar-locker
+      job: <enviroment-idlocker>
       __path__: /var/log/*.log
 - job_name: ar-mosquitto
   static_configs:
@@ -22,4 +22,4 @@ scrape_configs:
       - localhost
     labels:
       job: ar-mosquitto
-      __path__: /var/log/mosquitto 
+      __path__: /var/log/mosquitto *.log
